@@ -1,21 +1,19 @@
 //-----------------------Firebase-----------------------//
 firebase.initializeApp( {
-    apiKey: "AIzaSyAkUSI4f2j3qNfjQnzAjbAb_hmvku-UPKc",
-    authDomain: "gogokodo-login.firebaseapp.com",
-    projectId: "gogokodo-login",
-    storageBucket: "gogokodo-login.appspot.com",
-    messagingSenderId: "199742607551",
-    appId: "1:199742607551:web:a78c5ef4fd132e8b4e760a",
-    measurementId: "G-NCTTEQ740F"
+    apiKey: "AIzaSyAD1KPUlqKsN3eU_2ikLhU4HUcPsfytkLU",
+    authDomain: "gogokodo-2590b.firebaseapp.com",
+    projectId: "gogokodo-2590b",
+    storageBucket: "gogokodo-2590b.appspot.com",
+    messagingSenderId: "833185072727",
+    appId: "1:833185072727:web:03129f4b8d69a734328512"
     });
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      var uid = user.uid;
-      console.log(uid)
-      document.querySelector('body').style.display = 'block'
+      //var uid = user.uid;
+      document.querySelector('body').style.display = 'block'         
       // ...
     } else {
         document.location.href = "http://127.0.0.1:5500/FrontOffice/loginPage/index.html"
