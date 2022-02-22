@@ -22,7 +22,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-//------------------------------------------------------//
+//-----------------------API-----------------------//
 
 const article = document.querySelector('ul');
 const searchBar = document.querySelector('input');
@@ -31,28 +31,68 @@ let dataAPI = [];
 fetch('https://strapi-gogokodo.herokuapp.com/api/sources')
     .then(response => response.json())
     .then(data => { 
-        display(data.data)
         dataAPI = data.data
+        display(data.data)
+        console.log(dataAPI);
     })
 
 function display (data) {
-    // for (video of data) {
-    //     article.innerHTML += 
-    //     `<li>    
-    //         <h3>${video.attributes.title}</h3>
-    //         <a href="${video.attributes.url}" target = "_blank" >Visiter</a>
-    //     </li>`
-    // }
-    article.innerHTML = "";
 
+    article.innerHTML = "";
     data.map(video => {
+        let difficultyColor = "";
+
+        // Display difficulty
+        switch (video.attributes.difficulty) {
+            case "Facile" :
+                difficultyColor = "#2CA438"
+                break;
+            case "Moyen" :
+                difficultyColor = "#F49A2F"
+                break;
+            case "Dure" :
+                difficultyColor = "#E13131"
+                break;
+        default : difficultyColor = "#2CA438"
+        }
+
+        // Research color of category if null on API
+        let categoryColor = "";
+        let category = video.attributes.category
+
+        if (video.attributes.color === null) {
+                categoryColor = "grey";
+            }
+        if (video.attributes.color === null) {
+            for (i=0; i<dataAPI.length; i++) {
+                if (dataAPI[i].attributes.category == category && dataAPI[i].attributes.color != null) {
+                    categoryColor = dataAPI[i].attributes.color
+                } 
+            } 
+        } else {
+            categoryColor = video.attributes.color;
+        }
+
+        //Inject to HTML
         article.innerHTML += 
-        `<li>
-            <h3>${video.attributes.title}</h3>
-            <a href="${video.attributes.url}" target="_blank">Visiter</a>
-        </li>`
+            `<li>
+                <div>
+                    <h3>${video.attributes.title}</h3>
+                    <img class="addFav" src="images/coeur.png" alt="coeur vide">
+                </div>
+                <div>
+                    <p class="category" style="background-color: ${categoryColor}">${video.attributes.category.toUpperCase()}</p>
+                </div>
+                <div>
+                    <span class="difficulty" style= "background-color:${difficultyColor}"></span>
+                    <a href="${video.attributes.url}" target="_blank">Visiter</a>
+                </div>
+            </li>`
     })
 }
+
+//-----------------------Search bar-----------------------//
+
 
 searchBar.addEventListener('keyup', () => {
     let input = searchBar.value
@@ -64,3 +104,38 @@ searchBar.addEventListener('keyup', () => {
     })
     display(filter)
 })
+
+//-----------------------Favoris switch-----------------------//
+ 
+// const addFav = document.querySelectorAll('.addFav')
+// let stateFavTab = [];
+
+// function createObject (tab) {
+//     for (article of tab) {
+//             let object = {}
+//             object.id = tab[i].id;
+//             object.stateFav = false;
+//             stateFavTab.push(object)
+//     }
+// }
+// createObject(dataAPI)
+// console.log();
+
+// addFav.forEach(addFav => {
+//     switchFav(addFav);
+// });
+
+// function switchFav (addFav) {
+//     addFav.src = "images/coeur.png"
+//     if (stateFav == false) {
+//         stateFav = true;
+//         console.log(stateFav)
+//         console.log(addFav.src)
+//         addFav.src = "images/coeur_fav.png"
+//     } else {
+//         stateFav = false;
+//         console.log(stateFav)
+//         console.log(addFav.src)
+//         addFav.src = "images/coeur.png"
+//     }
+// }
