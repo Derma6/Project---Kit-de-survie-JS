@@ -28,7 +28,7 @@ fetch('https://strapi-gogokodo.herokuapp.com/api/sources')
     .then(response => response.json())
     .then(data => { 
         dataAPI = data.data
-        display(data.data)
+        display(dataAPI)
         console.log(dataAPI);
     })
 
@@ -71,10 +71,10 @@ function display (data) {
 
         //Inject to HTML
         article.innerHTML += 
-            `<li>
+            `<li data-id="${video.id}">
                 <div>
                     <h3>${video.attributes.title}</h3>
-                    <img class="addFav" src="images/coeur.png" alt="coeur vide" onclick="switchFav(this);">                
+                    <img class="addFav" src="images/coeur.png" alt="coeur" onclick="switchFav(this);">                
                 </div>
                 <div>
                     <p class="category" style="background-color: ${categoryColor}">${video.attributes.category.toUpperCase()}</p>
@@ -102,12 +102,79 @@ searchBar.addEventListener('keyup', () => {
 
 //-----------------------Favoris switch-----------------------//
  
-const addFav = document.querySelectorAll('.addFav')
+//const addFav = document.querySelectorAll('.addFav')
+const favorisBtn = document.querySelector('#favorisBtn')
+const favoris = [];
 
-function switchFav (element) {    
+function switchFav (element) {
     if (element.getAttribute("src") == "images/coeur.png") {
         element.src = "images/coeur_fav.png"
+        // console.log(dataAPI.findIndex(element.parentNode.parentNode.dataset.id))
+        const index = dataAPI.findIndex(data => data.id == element.parentNode.parentNode.dataset.id)
+        console.log(index);
+        favoris.push(dataAPI[index])
     } else {
         element.src = "images/coeur.png"
+        index = favoris.findIndex(data => data.id == element.parentNode.parentNode.dataset.id)
+        favoris.splice(index, 1)
     }
+    console.log(favoris)
 }
+
+favorisBtn.addEventListener('click', () => {
+    display(favoris);
+})
+
+//-----------------------TERMINAL-----------------------//
+
+const terminalBtn = document.querySelector("#terminal")
+const titre = document.querySelector("h1")
+const terminal = document.querySelector(".terminal")
+const main = document.querySelector("main")
+const termLine = document.querySelector("#text")
+
+terminalBtn.addEventListener('click', () => {
+    console.log('clic');
+  if (terminal.style.display === "none") {
+    terminal.style.display = "block"
+    termLine.focus()
+    main.style.display = "none"
+    titre.innerHTML = "TERMINAL"
+    terminalBtn.innerHTML = "Hub"
+  } else {
+    terminal.style.display = "none"
+    main.style.display = "flex"
+    titre.innerHTML = "<span>Go Go</span> Hub"
+    terminalBtn.innerHTML = "Terminal"
+  }
+})
+
+const check = document.querySelector(".console")
+const menu = document.querySelector(".menu")
+
+check.addEventListener('change', (e) => {
+  if (e.target.value == "ls") {
+    menu.style.display = "block"
+    e.target.value = ""
+  } else {
+    menu.style.display = "none"
+  }
+
+  if (e.target.value == "cd ..") {
+    terminal.style.display = "none"
+    main.style.display = "flex"
+    titre.innerHTML = "<span>Go Go</span> Hub"
+    e.target.value = ""
+    terminalBtn.innerHTML = "Terminal"
+  }
+
+  if (e.target.value == "cd index.html") {
+    document.location.href = "http://127.0.0.1:5500/FrontOffice/loginPage/index.html"
+    e.target.value = ""
+  }
+
+  if (e.target.value == "cd Hub.html") {
+    document.location.href = "http://127.0.0.1:5500/index.html#"
+    e.target.value = ""
+  }
+})

@@ -9,12 +9,12 @@
 </head>
 <body>
     <header>
-        <button>Terminal</button>
+        <button id="terminal">Terminal</button>
         <div class="container">
             <h1 id="mainTitle"><span>Go Go </span>Hub</h1>
         </div>
     </header>
-    <main class="mainPlacement">
+    <main class="mainPlacement" style="display: flex;">
         <section>
             <div class="container">
                 <div>
@@ -22,28 +22,45 @@
                     <button class="medium button">Moyen</button>
                     <button class="high button">Dure</button>
                 </div>
-                <button class="favoris button">Mes favoris</button>
+                <button id="favorisBtn" class="favoris button">Mes favoris</button>
             </div>
             <input id="searchBar" type="text" placeholder="Recherche...">
         </section>        
         <section>
             <ul>
-                <li>
+                <!-- <li>
                     <div>
                         <h3>Titre</h3>
-                        <img class="addFav" src="images/coeur.png" alt="coeur vide" onclick="this.src='images/coeur_fav.png'">
+                        <img class="addFav" src="images/coeur.png" alt="coeur" onclick="switchFav(this);">
                     </div>
                     <div>
-                        <p class="category" >Category</p>
+                        <p class="category">Category</p>
                      </div>
                     <div>
                         <span class="difficulty"></span>
                         <a href="" target="_blank">Visiter</a>
                     </div>
-                </li> 
+                </li>  -->
             </ul>
         </section>
     </main>
+    <section class="terminal" style="display: none;">
+        <div class="console">
+            <label for="terminal">></label>
+            <input id="text" type="text" placeholder="Entrez une ligne de code...">
+        </div>
+        <div>
+            <ul class="menu">
+                <li>index.html</li>
+                <li>Hub.html</li>
+                <li>kit de survie.html</li>
+                <li>kata/js</li>
+                <li>kata/html</li>
+                <li>contact.html</li>
+                <li>discord</li>
+            </ul>
+        </div>
+    </section>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
