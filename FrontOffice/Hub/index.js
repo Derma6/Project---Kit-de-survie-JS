@@ -12,13 +12,9 @@ firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      //var uid = user.uid;
       document.querySelector('body').style.display = 'block'         
-      // ...
     } else {
         document.location.href = "http://127.0.0.1:5500/FrontOffice/loginPage/index.html"
-      // User is signed out
-      // ...
     }
 });
 
@@ -78,7 +74,7 @@ function display (data) {
             `<li>
                 <div>
                     <h3>${video.attributes.title}</h3>
-                    <img class="addFav" src="images/coeur.png" alt="coeur vide">
+                    <img class="addFav" src="images/coeur.png" alt="coeur vide" onclick="switchFav(this);">                
                 </div>
                 <div>
                     <p class="category" style="background-color: ${categoryColor}">${video.attributes.category.toUpperCase()}</p>
@@ -93,7 +89,6 @@ function display (data) {
 
 //-----------------------Search bar-----------------------//
 
-
 searchBar.addEventListener('keyup', () => {
     let input = searchBar.value
     input=input.toLowerCase();
@@ -107,35 +102,12 @@ searchBar.addEventListener('keyup', () => {
 
 //-----------------------Favoris switch-----------------------//
  
-// const addFav = document.querySelectorAll('.addFav')
-// let stateFavTab = [];
+const addFav = document.querySelectorAll('.addFav')
 
-// function createObject (tab) {
-//     for (article of tab) {
-//             let object = {}
-//             object.id = tab[i].id;
-//             object.stateFav = false;
-//             stateFavTab.push(object)
-//     }
-// }
-// createObject(dataAPI)
-// console.log();
-
-// addFav.forEach(addFav => {
-//     switchFav(addFav);
-// });
-
-// function switchFav (addFav) {
-//     addFav.src = "images/coeur.png"
-//     if (stateFav == false) {
-//         stateFav = true;
-//         console.log(stateFav)
-//         console.log(addFav.src)
-//         addFav.src = "images/coeur_fav.png"
-//     } else {
-//         stateFav = false;
-//         console.log(stateFav)
-//         console.log(addFav.src)
-//         addFav.src = "images/coeur.png"
-//     }
-// }
+function switchFav (element) {    
+    if (element.getAttribute("src") == "images/coeur.png") {
+        element.src = "images/coeur_fav.png"
+    } else {
+        element.src = "images/coeur.png"
+    }
+}
