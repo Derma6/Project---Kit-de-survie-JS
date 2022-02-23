@@ -202,6 +202,26 @@ section:nth-child(2) a {
     display : none;
 }
 
+/*-------------------------FOOTER-------------------------*/
+footer ul {
+    display: flex;
+    justify-content: center;
+    padding: 5em 0;
+}
+footer li {
+    color: white;
+    background-color: #E5E5E5;
+    text-align: center;
+    width: 2em;
+    height: 2em;
+    line-height: 2em;
+    margin: 0.5em;
+    cursor: pointer;
+}
+footer li:active {
+    background-color: #FF6B6B;
+}
+
 /*-------------------------REPONSIVE-------------------------*/
 @media all and (max-width : 1150px) {
     ul {

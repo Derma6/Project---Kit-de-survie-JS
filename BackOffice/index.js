@@ -30,6 +30,3 @@ const loading = (title) => {
 }}
 
 window.onload = loading('h1')
-
-
-

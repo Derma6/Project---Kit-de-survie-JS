@@ -19,21 +19,43 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 //-----------------------API-----------------------//
+let dataAPI = [];
+let metaAPI = [];
 
 async function easyFetch (url, callback) {
     const response = await fetch(url);
     const data = await response.json();
     dataAPI = data.data
-    callback(data.data) 
+    metaAPI = data.meta
+    console.log(dataAPI);
+    console.log(metaAPI);
+    callback(data)
 }
 
 easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
+const paginationBtn = document.querySelector('footer ul')
 
+// fetch('https://strapi-gogokodo.herokuapp.com/api/sources?pagination[page]=1&pagination[pageSize]=12')
+// .then (response => response.json())
+// .then(pages => pagination(pages)) 
+
+function pagination (pages) {
+    console.log(pages.meta.pagination);
+
+    for(i=0; i < pages.meta.pagination.pageCount; i++) {
+        //create page button
+        paginationBtn.innerHTML += `<li id="page${i+1}" onclick>${i+1}</li>`
+    }
+
+    display(pages.data)
+
+}
+
+easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources?pagination[page]=1&pagination[pageSize]=12', pagination)
 //-----------------------DISPLAY-----------------------//
 
-const article = document.querySelector('ul');
+const article = document.querySelector('.contenu');
 const searchBar = document.querySelector('input');
-let dataAPI = [];
 
 function displayDifficulty(difficulty) {
     switch (difficulty) {
@@ -102,6 +124,7 @@ searchBar.addEventListener('keyup', () => {
         dataAPI.attributes.category.toLowerCase().includes(input) || dataAPI.attributes.title.toLowerCase().includes(input)
         )
     })
+    easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
     display(filter)
     console.log(filter);
     console.log(dataAPI);
@@ -112,7 +135,7 @@ searchBar.addEventListener('keyup', () => {
  
 //const addFav = document.querySelectorAll('.addFav')
 const favorisBtn = document.querySelector('#favorisBtn')
-const favoris = [];
+let favoris = [];
 
 function switchFav (element) {
     if (element.getAttribute("src") == "images/coeur.png") {
@@ -125,23 +148,41 @@ function switchFav (element) {
         index = favoris.findIndex(data => data.id == element.parentNode.parentNode.dataset.id)
         favoris.splice(index, 1)
     }
+    saveContent("favoris", JSON.stringify(favoris))
     console.log(favoris)
 }
+function saveContent(key, contenu) {
+    localStorage.setItem(key, contenu)
+}
+function loadContent (key){
+    if(localStorage.getItem(key).includes('{')){
+         return JSON.parse(localStorage.getItem(key))
+    }
+    else{
+        return localStorage.getItem(key)
+    }
+}
 
-let state = false;
+let stateDisplayFav = false;
 favorisBtn.addEventListener('click', () => {
-    switch (state) {
+    switch (stateDisplayFav) {
         case false : 
             display(favoris)
-            state = true
+            stateDisplayFav = true
             break;
         case true : 
             easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
-            state = false
+            stateDisplayFav = false
             break;
         default : easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
     }
 })
+
+window.onload = () => {
+    //favoris.push(loadContent("favoris"))
+    favoris = loadContent("favoris")
+    console.log(favoris)
+}
 
 //-----------------------TERMINAL-----------------------//
 
@@ -196,3 +237,4 @@ check.addEventListener('change', (e) => {
     e.target.value = ""
   }
 })
+
