@@ -20,54 +20,59 @@ firebase.auth().onAuthStateChanged((user) => {
 
 //-----------------------API-----------------------//
 
+async function easyFetch (url, callback) {
+    const response = await fetch(url);
+    const data = await response.json();
+    dataAPI = data.data
+    callback(data.data) 
+}
+
+easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
+
+//-----------------------DISPLAY-----------------------//
+
 const article = document.querySelector('ul');
 const searchBar = document.querySelector('input');
 let dataAPI = [];
 
-fetch('https://strapi-gogokodo.herokuapp.com/api/sources')
-    .then(response => response.json())
-    .then(data => { 
-        dataAPI = data.data
-        display(dataAPI)
-        console.log(dataAPI);
-    })
+function displayDifficulty(difficulty) {
+    switch (difficulty) {
+        case "Facile" :
+            return "#2CA438"
+        case "Moyen" :
+            return "#F49A2F"
+        case "Dure" :
+            return "#E13131"
+        default : return "#2CA438"
+    }
+}
+function researchCategoryColor (colorByAPI, categoryByAPI, dataAPI) {
+    if (colorByAPI === null) {
+        for (i=0; i<dataAPI.length; i++) {
+            if (dataAPI[i].attributes.category == categoryByAPI && dataAPI[i].attributes.color != null) {
+                return dataAPI[i].attributes.color
+            } 
+        } 
+    } else {
+        return colorByAPI;
+    }
+    if (colorByAPI === null) {
+        return "grey";
+    }
+}
 
 function display (data) {
 
     article.innerHTML = "";
+
     data.map(video => {
-        let difficultyColor = "";
 
         // Display difficulty
-        switch (video.attributes.difficulty) {
-            case "Facile" :
-                difficultyColor = "#2CA438"
-                break;
-            case "Moyen" :
-                difficultyColor = "#F49A2F"
-                break;
-            case "Dure" :
-                difficultyColor = "#E13131"
-                break;
-        default : difficultyColor = "#2CA438"
-        }
+        let difficultyColor = displayDifficulty(video.attributes.difficulty);        
 
         // Research color of category if null on API
-        let categoryColor = "";
-        let category = video.attributes.category
 
-        if (video.attributes.color === null) {
-                categoryColor = "grey";
-            }
-        if (video.attributes.color === null) {
-            for (i=0; i<dataAPI.length; i++) {
-                if (dataAPI[i].attributes.category == category && dataAPI[i].attributes.color != null) {
-                    categoryColor = dataAPI[i].attributes.color
-                } 
-            } 
-        } else {
-            categoryColor = video.attributes.color;
-        }
+        let categoryColor = researchCategoryColor(video.attributes.color, video.attributes.category, dataAPI);
 
         //Inject to HTML
         article.innerHTML += 
@@ -98,6 +103,9 @@ searchBar.addEventListener('keyup', () => {
         )
     })
     display(filter)
+    console.log(filter);
+    console.log(dataAPI);
+    console.log(input);
 })
 
 //-----------------------Favoris switch-----------------------//
@@ -109,7 +117,6 @@ const favoris = [];
 function switchFav (element) {
     if (element.getAttribute("src") == "images/coeur.png") {
         element.src = "images/coeur_fav.png"
-        // console.log(dataAPI.findIndex(element.parentNode.parentNode.dataset.id))
         const index = dataAPI.findIndex(data => data.id == element.parentNode.parentNode.dataset.id)
         console.log(index);
         favoris.push(dataAPI[index])
@@ -121,8 +128,19 @@ function switchFav (element) {
     console.log(favoris)
 }
 
+let state = false;
 favorisBtn.addEventListener('click', () => {
-    display(favoris);
+    switch (state) {
+        case false : 
+            display(favoris)
+            state = true
+            break;
+        case true : 
+            easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
+            state = false
+            break;
+        default : easyFetch('https://strapi-gogokodo.herokuapp.com/api/sources', display)
+    }
 })
 
 //-----------------------TERMINAL-----------------------//
