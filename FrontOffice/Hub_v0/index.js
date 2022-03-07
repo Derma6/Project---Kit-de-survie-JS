@@ -179,7 +179,6 @@ favorisBtn.addEventListener('click', () => {
 })
 
 window.onload = () => {
-    //favoris.push(loadContent("favoris"))
     favoris = loadContent("favoris")
     console.log(favoris)
 }
@@ -237,4 +236,3 @@ check.addEventListener('change', (e) => {
     e.target.value = ""
   }
 })
-
