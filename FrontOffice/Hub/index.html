@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kit du survie JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <button id="terminal">Terminal</button>
+        <div class="container">
+            <h1 id="mainTitle"><span>Go Go </span>Hub</h1>
+        </div>
+    </header>
+    <main class="mainPlacement" style="display: flex;">
+        <section>
+            <div class="container">
+                <div>
+                    <button id="Facile" class="low button">Facile</button>
+                    <button id="Moyen" class="medium button">Moyen</button>
+                    <button id="Dure" class="high button">Dure</button>
+                </div>
+                <button id="favorisBtn" class="favoris button">Mes favoris</button>
+            </div>
+            <input id="searchBar" type="text" placeholder="Recherche...">
+        </section>        
+        <section>
+            <ul class="contenu">
+                <!-- <li>
+                    <div>
+                        <h3>Titre</h3>
+                        <img class="addFav" src="images/coeur.png" alt="coeur" onclick="switchFav(this);">
+                    </div>
+                    <div>
+                        <p class="category">Category</p>
+                     </div>
+                    <div>
+                        <span class="difficulty"></span>
+                        <a href="" target="_blank">Visiter</a>
+                    </div>
+                </li>  -->
+            </ul>
+        </section>
+    </main>
+    <section class="terminal" style="display: none;">
+        <div class="console">
+            <label for="terminal">></label>
+            <input id="text" type="text" placeholder="Entrez une ligne de code...">
+        </div>
+        <div>
+            <ul class="menu">
+                <li>index.html</li>
+                <li>Hub.html</li>
+                <li>kit de survie.html</li>
+                <li>kata/js</li>
+                <li>kata/html</li>
+                <li>contact.html</li>
+                <li>discord</li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <ul>
+            <!-- <li>1</li> -->
+        </ul>
+    </footer>
+
+    <!-- Firebase
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script> -->
+
+</body>
+<script type="module" src="index.js"></script>
+<script type="module" src="globalState.js"></script>
+</html>
+
